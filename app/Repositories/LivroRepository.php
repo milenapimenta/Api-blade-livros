@@ -19,11 +19,14 @@ class LivroRepository
         return $this->model->paginate($perPage, $columns, 'page', $page)->withQueryString();
     }
 
+    public function searchLivros(string $titulo)
+    {
+        return $this->model->where('titulo', 'like', '%' . $titulo . '%')->get();
+    }
     public function createLivro(array $data)
     {
         return $this->model->create($data);
     }
-
     public function showLivro(int $id)
     {
         return $this->model->findOrFail($id);

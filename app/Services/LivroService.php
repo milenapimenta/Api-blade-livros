@@ -16,6 +16,10 @@ class LivroService
 
     public function getPaginatedLivros(Request $request)
     {
+        if ($request->has('titulo')) {
+            return $this->livroRepository->searchLivros($request->get('titulo'));
+        }
+
         $perPage = $request->get('perPage') ?? 5;
         $page = $request->get('page') ?? 1;
         $columns = $this->getColumns($request->get('columns')) ?? ['*'];

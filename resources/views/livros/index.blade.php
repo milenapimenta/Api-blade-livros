@@ -1,7 +1,3 @@
-@php
-    $categorias = App\Models\Categoria::all();
-@endphp
-
 @extends('layouts.app')
 
 @section('content')
@@ -21,6 +17,13 @@
     <div class="d-flex justify-content-between align-items-center mb-4 pt-2">
         <h3 class="text-center">Lista de Livros</h3>
         <a href="{{ route('livros.create') }}" class="btn btn-primary fw-bold">Criar Livro</a>
+    </div>
+
+    <div class=" mb-4">
+        <form class="d-flex" action="{{ route('livros.index') }}" method="GET">
+            <input type="text" name="titulo" class="form-control" placeholder="Pesquisar por título" value="{{ request('titulo') }}">
+            <button type="submit" class="btn btn-outline-secondary">Pesquisar</button>
+        </form>
     </div>
 
     <table class="table table-striped border-secondary-subtle">
@@ -49,35 +52,16 @@
                         @endforeach
                     </td>
                     <td>
-                        <a
-                            href="{{ route('livros.show', $livro->id) }}"
-                            data-bs-toggle="tooltip"
-                            data-bs-placement="top"
-                            title="Visualizar"
-                            class="btn btn-secondary btn-sm"
-                        >
+                        <a href="{{ route('livros.show', $livro->id) }}" data-bs-toggle="tooltip" data-bs-placement="top" title="Visualizar" class="btn btn-secondary btn-sm">
                             <i class="fa-solid fa-eye"></i>
                         </a>
-                        <a
-                            href="{{ route('livros.edit', $livro->id) }}"
-                            data-bs-toggle="tooltip"
-                            data-bs-placement="top"
-                            title="Editar"
-                            class="btn btn-primary btn-sm"
-                        >
+                        <a href="{{ route('livros.edit', $livro->id) }}" data-bs-toggle="tooltip" data-bs-placement="top" title="Editar" class="btn btn-primary btn-sm">
                             <i class="fa-solid fa-pen-to-square"></i>
                         </a>
                         <form action="{{ route('livros.destroy', $livro->id) }}" method="POST" class="d-inline">
                             @csrf
                             @method('DELETE')
-                            <button
-                                type="submit"
-                                data-bs-toggle="tooltip"
-                                data-bs-placement="top"
-                                title="Excluir"
-                                class="btn btn-sm btn-danger"
-                                onclick="return confirm('Tem certeza de que deseja excluir este livro?');"
-                            >
+                            <button type="submit" data-bs-toggle="tooltip" data-bs-placement="top" title="Excluir" class="btn btn-sm btn-danger" onclick="return confirm('Tem certeza de que deseja excluir este livro?');">
                                 <i class="fa-solid fa-trash"></i>
                             </button>
                         </form>
@@ -87,14 +71,16 @@
         </tbody>
     </table>
 
-    <div>
-        {{ $livros->links('pagination::bootstrap-5') }}
-    </div>
+    @if ($livros instanceof \Illuminate\Pagination\LengthAwarePaginator)
+        <div>
+            {{ $livros->links('pagination::bootstrap-5') }}
+        </div>
+    @endif
 
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             var tooltipTriggerList = Array.from(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-            tooltipTriggerList.forEach(function (tooltipTriggerEl) {
+            tooltipTriggerList.forEach(function(tooltipTriggerEl) {
                 new bootstrap.Tooltip(tooltipTriggerEl)
             })
         })
