@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Repositories\LivroRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class LivroService
 {
@@ -47,18 +48,24 @@ class LivroService
     public function createLivro(Request $request)
     {
         $validated = $request->validate([
+            'capa' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'titulo' => 'required|string|max:255',
+            'sinopse' => 'required|string',
             'autor' => 'required|string|max:255',
             'editora' => 'required|string|max:255',
             'ano' => 'required|integer|min:1000|max:' . date('Y'),
-            'categorias' => 'array|exists:categorias,id',
+            'categorias' => 'nullable|array|exists:categorias,id',
         ]);
 
-        $livro = $this->livroRepository->createLivro($validated);
+        if ($request->hasFile('capa')) {
+            $capaPath = $request->file('capa')->store('public/capas');
+            $validated['capa'] = json_encode(['url' => Storage::url($capaPath)]);
 
-        if (!empty($validated['categorias'])) {
-            $livro->categorias()->sync($validated['categorias']);
+            $request->capa->move(public_path('storage/capas'), $capaPath);
         }
+
+        $livro = $this->livroRepository->createLivro($validated);
+        $livro->categorias()->sync($request->input('categorias', []));
 
         return $livro;
     }

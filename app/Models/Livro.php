@@ -5,13 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Str;
 
 class Livro extends Model
 {
     use SoftDeletes;
 
     protected $table = 'livros';
-    protected $fillable = ['titulo', 'autor', 'editora', 'ano'];
+    protected $fillable = ['capa', 'titulo', 'sinopse', 'autor', 'editora', 'ano'];
+    protected $appends = ['limited_sinopse'];
 
     public function categorias()
     {
@@ -28,5 +30,10 @@ class Livro extends Model
         static::addGlobalScope('ordered', function (EloquentBuilder $queryBuilder) {
             $queryBuilder->orderBy('id', 'desc');
         });
+    }
+
+    public function getLimitedSinopseAttribute()
+    {
+        return Str::limit($this->sinopse, 80);
     }
 }

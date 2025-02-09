@@ -12,13 +12,23 @@
     </head>
 
 <!-- Formulário para adicionar um livro -->
-<form class="container" action="{{ route('livros.store') }}" method="POST">
+<form class="container" action="{{ route('livros.store') }}" method="POST" enctype="multipart/form-data">
     <h3 class="pt-2 pb-3">Criar Livro</h3>
     @csrf
 
     <div class="mb-3">
-        <label for="titulo" class="form-label fw-bold">Título do Livro</label>
+        <label for="capa" class="form-label fw-bold">Capa</label>
+        <input type="file" class="form-control" id="capa" name="capa">
+    </div>
+
+    <div class="mb-3">
+        <label for="titulo" class="form-label fw-bold">Título</label>
         <input type="text" class="form-control" id="titulo" name="titulo" required>
+    </div>
+
+    <div class="mb-3">
+        <label for="sinopse" class="form-label fw-bold">Sinopse</label>
+        <textarea class="form-control" id="sinopse" name="sinopse" required></textarea>
     </div>
 
     <div class="mb-3">

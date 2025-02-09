@@ -4,13 +4,34 @@
 <div class="container">
     <h3 class="my-2 mb-4">Editar Livro</h3>
 
-    <form action="{{ route('livros.update', $livro->id) }}" method="POST">
+    <form action="{{ route('livros.update', $livro->id) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
 
         <div class="mb-3">
+            <label for="capa" class="form-label fw-bold">Capa</label>
+            <input type="file" class="form-control" id="capa" name="capa"  value="{{ $livro->capa }}">
+
+            @if ($livro->capa)
+                @php
+                    $capa = json_decode($livro->capa, true);
+                    $url = $capa['url'];
+                @endphp
+                <div class="mt-3">
+                    <label class="form-label fw-bold me-2">Capa Atual</label>
+                    <img src="{{ asset($url) }}" alt="Capa do Livro" class="img-fluid" style="max-height: 100px;">
+                </div>
+            @endif
+        </div>
+    
+        <div class="mb-3">
             <label for="titulo" class="form-label fw-bold">Título do Livro</label>
             <input type="text" class="form-control" id="titulo" name="titulo" value="{{ $livro->titulo }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="sinopse" class="form-label fw-bold">Sinopse</label>
+            <textarea class="form-control" id="sinopse" name="sinopse" required>{{ $livro->sinopse }}</textarea>
         </div>
 
         <div class="mb-3">

@@ -2,10 +2,14 @@
 
 use App\Http\Controllers\CategoriasController;
 use App\Http\Controllers\LivrosController;
+use App\Services\LivroService;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    $livroService = app()->make(LivroService::class);
+    $livros = $livroService->getPaginatedLivros(request());
+
+    return view('welcome', ['livros' => $livros]);
 });
 
 Route::prefix('livros')->group(function () {
