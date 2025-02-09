@@ -50,25 +50,7 @@ class LivrosController extends Controller
     }
     public function update(Request $request, Livro $livro)
     {
-        $validatedData = $request->validate([
-            'capa' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'titulo' => 'required|string|max:255',
-            'sinopse' => 'required|string',
-            'autor' => 'required|string|max:255',
-            'editora' => 'required|string|max:255',
-            'ano' => 'required|integer|min:1000|max:' . date('Y'),
-            'categorias' => 'nullable|array',
-        ]);
-
-        if ($request->hasFile('capa')) {
-            $capaPath = $request->file('capa')->store('public/capas');
-            $validatedData['capa'] = json_encode(['url' => Storage::url($capaPath)]);
-
-            $request->capa->move(public_path('storage/capas'), $capaPath);
-        }
-
-        $livro->update($validatedData);
-        $livro->categorias()->sync($request->input('categorias', []));
+        $this->livroService->updateLivro($request, $livro->id);
 
         return redirect()->route('livros.index')->with('success', 'Livro atualizado com sucesso!');
     }

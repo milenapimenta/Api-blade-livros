@@ -77,7 +77,28 @@ class LivroService
 
     public function updateLivro(Request $request, int $id)
     {
-        return $this->livroRepository->updateLivro($request, $id);
+        $validatedData = $request->validate([
+            'capa' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'titulo' => 'required|string|max:255',
+            'sinopse' => 'required|string',
+            'autor' => 'required|string|max:255',
+            'editora' => 'required|string|max:255',
+            'ano' => 'required|integer|min:1000|max:' . date('Y'),
+            'categorias' => 'nullable|array',
+        ]);
+
+        if ($request->hasFile('capa')) {
+            $capaPath = $request->file('capa')->store('public/capas');
+            $validatedData['capa'] = json_encode(['url' => Storage::url($capaPath)]);
+
+            $request->capa->move(public_path('storage/capas'), $capaPath);
+        }
+        
+        $livro = $this->livroRepository->updateLivro($validatedData, $id);
+        $livro->categorias()->sync($request->input('categorias', []));
+
+        return $livro;
+
     }
 
     public function deletarLivro(int $id)

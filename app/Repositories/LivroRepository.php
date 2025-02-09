@@ -32,14 +32,13 @@ class LivroRepository
         return $this->model->findOrFail($id);
     }
 
-    public function updateLivro(Request $request, int $id)
+    public function updateLivro(array $data, int $id)
     {
         $livro = $this->model->findOrFail($id);
-        $livro->update($request->all());
+        $livro->update($data);
 
         return $livro;
     }
-
     public function deletarLivro(int $id)
     {
         $livro = $this->model->findOrFail($id);
