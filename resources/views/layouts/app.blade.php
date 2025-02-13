@@ -16,6 +16,10 @@
         .bg-blue {
             background-color: #001F3D;
         }
+
+        .text-blue {
+            color: #001F3D;
+        }
     </style>
 
     <div class="d-flex">
@@ -33,6 +37,14 @@
                         <i class="fa-solid fa-list me-2"></i>Categorias
                     </a>
                 </li>
+                @auth
+                <div class="position-absolute bottom-0">
+                    <div class="d-flex w-100 justify-content-between align-items-center me-4 mb-4">
+                        <p class="text-white fw-bold mt-3 me-5">Olá, {{ Auth::user()->name }}!</p>
+                        <a href="{{ route('logout') }}" class="btn btn-light text-blue fw-bold">Sair</a>
+                    </div>
+                </div>
+                @endauth
             </ul>
         </div>
 
