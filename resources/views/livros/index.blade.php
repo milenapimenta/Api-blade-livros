@@ -17,7 +17,7 @@
     <div class=" mb-4">
         <form class="d-flex" action="{{ route('livros.index') }}" method="GET">
             <input type="text" name="titulo" class="form-control" placeholder="Pesquisar por título" value="{{ request('titulo') }}">
-            <button type="submit" class="btn btn-outline-secondary">Pesquisar</button>
+            <button type="submit" class="btn btn-outline-primary ms-2">Pesquisar</button>
         </form>
     </div>
 

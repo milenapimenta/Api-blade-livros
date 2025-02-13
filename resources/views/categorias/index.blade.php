@@ -17,6 +17,14 @@
         <a href="{{ route('categorias.create') }}" class="btn btn-primary fw-bold">Criar Categoria</a>
     </div>
 
+    <div class=" mb-4">
+        <form class="d-flex" action="{{ route('categorias.index') }}" method="GET">
+            <input type="text" name="name" class="form-control" placeholder="Pesquisar por nome" value="{{ request('titulo') }}">
+            <button type="submit" class="btn btn-outline-primary ms-2">Pesquisar</button>
+        </form>
+    </div>
+
+
     <table class="table table-striped border-secondary-subtle">
         <thead>
             <tr>

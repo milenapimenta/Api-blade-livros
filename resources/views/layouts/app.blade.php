@@ -37,6 +37,11 @@
                         <i class="fa-solid fa-list me-2"></i>Categorias
                     </a>
                 </li>
+                <li class="nav-item mb-2">
+                    <a class="nav-link text-white rounded {{ Route::is('home') ? 'bg-nav-item' : '' }}" href="{{ route('home') }}">
+                        <i class="fa-solid fa-globe me-2"></i>Website
+                    </a>
+                </li>
                 @auth
                 <div class="position-absolute bottom-0">
                     <div class="d-flex w-100 justify-content-between align-items-center me-4 mb-4">

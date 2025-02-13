@@ -32,8 +32,13 @@ class Livro extends Model
         });
     }
 
+    public function getLimitedTituloAttribute()
+    {
+        return Str::limit($this->titulo, 18);
+    }
+
     public function getLimitedSinopseAttribute()
     {
-        return Str::limit($this->sinopse, 80);
+        return Str::limit($this->sinopse, 50);
     }
 }

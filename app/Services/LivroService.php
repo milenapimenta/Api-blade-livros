@@ -21,7 +21,7 @@ class LivroService
             return $this->livroRepository->searchLivros($request->get('titulo'));
         }
 
-        $perPage = $request->get('perPage') ?? 5;
+        $perPage = $request->get('perPage') ?? 12;
         $page = $request->get('page') ?? 1;
         $columns = $this->getColumns($request->get('columns')) ?? ['*'];
 
